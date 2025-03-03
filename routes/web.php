@@ -37,6 +37,11 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
         'destroy' => 'admin.barang.destroy',
     ]);
 });
+
+Route::group(['middleware' => ['auth', 'role:kasir']], function () {
+    Route::get('/kasir', [KasirController::class, 'index'])->name('kasir.dashboard');
+});
+
 Route::get('/test-role', function () {
     return 'Role middleware is working.';
 })->middleware('role:admin');

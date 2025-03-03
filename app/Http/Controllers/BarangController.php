@@ -40,7 +40,7 @@ class BarangController extends Controller
             'gambar' => $gambarPath
         ]);
 
-        return redirect()->route('barang.index')->with('success', 'Barang berhasil ditambahkan!');
+        return redirect()->route('admin.barang.index')->with('success', 'Barang berhasil ditambahkan!');
     }
 
     public function edit(Barang $barang)
@@ -87,6 +87,6 @@ class BarangController extends Controller
         }
 
         $barang->delete();
-        return redirect()->route('barang.index')->with('success', 'Barang berhasil dihapus!');
+        return redirect()->route('admin.barang.index')->with('success', 'Barang berhasil dihapus!');
     }
 }

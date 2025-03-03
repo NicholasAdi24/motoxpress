@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Barang;
 
 class KasirController extends Controller
 {
     public function index()
     {
-        return view('kasir.dashboard'); // Pastikan ada file "kasir/dashboard.blade.php"
+        $barangs = Barang::all(); // Ambil semua barang dari database
+        return view('kasir.dashboard', compact('barangs'));
     }
 }
