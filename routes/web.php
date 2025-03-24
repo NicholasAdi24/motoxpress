@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KasirController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\PembayaranController;
 
 // Halaman utama
 Route::get('/', function () {
@@ -15,10 +16,12 @@ Route::get('/', function () {
 // Authentication Routes (Login, Register, etc.)
 Auth::routes();
 
-// Middleware untuk redirect sesuai role setelah login
+// Redirect setelah login sesuai role
 Route::get('/home', function () {
     if (Auth::check()) {
-        return Auth::user()->role === 'admin' ? redirect('/admin') : redirect('/kasir');
+        return Auth::user()->role === 'admin' 
+            ? redirect()->route('admin.dashboard') 
+            : redirect()->route('kasir.dashboard');
     }
     return redirect('/login');
 })->name('home');
@@ -40,7 +43,10 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
 
 Route::group(['middleware' => ['auth', 'role:kasir']], function () {
     Route::get('/kasir', [KasirController::class, 'index'])->name('kasir.dashboard');
+    Route::get('/riwayat-transaksi', [PembayaranController::class, 'index'])->name('riwayat.transaksi');
 });
+Route::post('/pembayaran', [PembayaranController::class, 'store'])->name('pembayaran.store');
+
 
 Route::get('/test-role', function () {
     return 'Role middleware is working.';
