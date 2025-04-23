@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <!-- Font Awesome 5 CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 </head>
 <body>
 
@@ -27,8 +30,8 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="bi bi-cash-coin"></i> <span class="sidebar-text">Keuangan</span>
+        <a href="{{ route('admin.penjualan') }}" class="nav-link {{ request()->routeIs('admin.penjualan') ? 'active' : '' }}">
+                <i class="bi bi-cash-coin"></i> <span class="sidebar-text">Penjualan</span>
             </a>
         </li>
         <li class="nav-item">
@@ -64,7 +67,53 @@
         @yield('content')
     </div>
 </div>
+<style>
+.toggle-month {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: background-color 0.2s;
+}
 
+.toggle-month:hover {
+    background-color: #e2e6ea;
+}
+
+.month-icon {
+    transition: transform 0.3s ease;
+}
+
+.rotate-down {
+    transform: rotate(90deg);
+}
+
+.card-header {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const toggles = document.querySelectorAll('.toggle-month');
+
+    toggles.forEach(toggle => {
+        toggle.addEventListener('click', function () {
+            const target = document.querySelector(this.dataset.target);
+            const icon = this.querySelector('.month-icon');
+
+            if (target.classList.contains('d-none')) {
+                target.classList.remove('d-none');
+                icon.classList.add('rotate-down');
+                icon.textContent = '🔽';
+            } else {
+                target.classList.add('d-none');
+                icon.classList.remove('rotate-down');
+                icon.textContent = '▶️';
+            }
+        });
+    });
+});
+</script>
 <style>
     body {
         font-family: Arial, sans-serif;

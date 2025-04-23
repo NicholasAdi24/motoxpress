@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Pembayaran;
 use App\Models\Barang;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\JsonResponse;
+
 
 class PembayaranController extends Controller
 {
@@ -19,66 +21,70 @@ class PembayaranController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
-            'pesanan' => 'required|string', // Pastikan pesanan dikirim sebagai JSON string
+            'pesanan' => 'required|string',
             'metode_pembayaran' => 'required|in:cash,qris',
             'total_harga' => 'required|numeric',
             'bukti_pembayaran' => $request->metode_pembayaran === 'qris' 
                 ? 'required|image|mimes:jpeg,png,jpg|max:2048' 
                 : 'nullable',
         ]);
-
-        // Mulai transaksi database
+    
         DB::beginTransaction();
-
+    
         try {
-            // Decode JSON pesanan menjadi array
             $pesanan = json_decode($request->pesanan, true);
-
+    
             if (!is_array($pesanan)) {
-                return back()->with('error', 'Format pesanan tidak valid.');
+                return response()->json(['message' => 'Format pesanan tidak valid.'], 422);
             }
-
-            // Simpan pembayaran ke database
+    
             $pembayaran = new Pembayaran();
-            $pembayaran->pesanan = json_encode($pesanan); // Simpan sebagai JSON
+            $pembayaran->pesanan = json_encode($pesanan);
             $pembayaran->total_harga = $request->total_harga;
             $pembayaran->metode_pembayaran = $request->metode_pembayaran;
             $pembayaran->status_pembayaran = 'paid';
             $pembayaran->waktu_pembayaran = now();
-
-            // Simpan bukti pembayaran jika metode adalah QRIS
+    
             if ($request->hasFile('bukti_pembayaran')) {
                 $file = $request->file('bukti_pembayaran');
                 $filename = time().'_'.$file->getClientOriginalName();
                 $file->storeAs('bukti_pembayaran', $filename, 'public');
                 $pembayaran->bukti_pembayaran = $filename;
             }
-
+    
             $pembayaran->save();
-
-            // Kurangi stok barang berdasarkan pesanan
+    
             foreach ($pesanan as $item) {
                 $barang = Barang::find($item['id']);
                 if ($barang && $barang->stok >= $item['qty']) {
                     $barang->stok -= $item['qty'];
                     $barang->save();
                 } else {
-                    // Rollback transaksi jika stok tidak cukup
                     DB::rollBack();
-                    return back()->with('error', "Stok barang '{$item['nama']}' tidak mencukupi.");
+                    return response()->json(['message' => "Stok barang '{$item['nama']}' tidak mencukupi."], 422);
                 }
             }
-
-            // Commit transaksi jika semua berhasil
+    
+                        // Commit transaksi jika semua berhasil
             DB::commit();
 
+            // Respons JSON jika permintaan via JavaScript/fetch
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Pembayaran berhasil.']);
+            }
+
+            // Jika bukan dari fetch() (fallback untuk form biasa)
             return redirect()->route('kasir.dashboard')->with('success', 'Pembayaran berhasil dan stok telah diperbarui.');
-        
+
+    
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Terjadi kesalahan saat memproses pembayaran: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat memproses pembayaran.',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
+    
 }
