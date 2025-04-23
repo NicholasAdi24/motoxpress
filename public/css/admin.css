@@ -60,6 +60,11 @@ body {
     padding: 5px 10px;
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
+    
+
 /* --- Responsive Sidebar --- */
 @media (max-width: 768px) {
     .sidebar {

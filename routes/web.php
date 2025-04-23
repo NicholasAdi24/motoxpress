@@ -49,6 +49,8 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
         'update'  => 'admin.barang.update',
         'destroy' => 'admin.barang.destroy',
     ]);
+    Route::get('/admin/penjualan', [AdminController::class, 'penjualan'])->name('admin.penjualan');
+
 });
 
 // Group untuk kasir

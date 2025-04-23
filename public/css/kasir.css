@@ -1,16 +1,43 @@
 body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
+    padding: 0;
 }
 
 .product-card {
-    cursor: pointer;
-    transition: transform 0.2s;
+    border-radius: 12px;
+    transition: transform 0.2s ease;
+}
+.product-card:hover {
+    transform: scale(1.02);
 }
 
-.product-card:hover {
-    transform: scale(1.05);
+.card {
+    border: none;
+    border-radius: 12px;
 }
+
+.table th, .table td {
+    vertical-align: middle;
+    text-align: left;
+}
+.card-title {
+    font-size: 1.2rem;
+}
+
+
+#struk {
+    font-family: monospace;
+    width: 250px; /* setara 58mm */
+    font-size: 12px;
+    line-height: 1.4;
+    z-index: -1;
+  }
+
+#overlay {
+    z-index: 1030; /* pastikan overlay tidak permanen menutupi seluruh layar */
+}
+  
 
 /* Sidebar */
 .sidebar {
@@ -164,8 +191,14 @@ body {
 
 .custom-bg {
     background-color: #00aeff; 
+    width: 100vw; /* pastikan selebar layar */
+    margin: 0;
 }
 
+.container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+  }
 
 
 @media (max-width: 768px) {
@@ -229,6 +262,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.modal-backdrop {
+    z-index: 1040 !important;
 }
 
 
@@ -325,3 +361,30 @@ td:nth-child(2) {
 .bayar-btn:hover {
     background-color: #145c38;
 }
+
+
+
+.toggle-month {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: background-color 0.2s;
+}
+
+.toggle-month:hover {
+    background-color: #e2e6ea;
+}
+
+.month-icon {
+    transition: transform 0.3s ease;
+}
+
+.rotate-down {
+    transform: rotate(90deg);
+}
+
+.card-header {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+}
+
