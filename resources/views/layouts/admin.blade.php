@@ -11,8 +11,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 </head>
-<body>
-
+<body> 
 <div class="d-flex">
     <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
@@ -221,5 +220,6 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+@yield('scripts')  
 </body>
 </html>

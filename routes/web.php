@@ -40,7 +40,9 @@ Route::get('/home', function () {
 
 // Group untuk admin
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index'); // /admin -> index()
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard'); // /admin/dashboard -> dashboard()
+
     Route::resource('admin/barang', BarangController::class)->names([
         'index'   => 'admin.barang.index',
         'create'  => 'admin.barang.create',
@@ -49,9 +51,11 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
         'update'  => 'admin.barang.update',
         'destroy' => 'admin.barang.destroy',
     ]);
-    Route::get('/admin/penjualan', [AdminController::class, 'penjualan'])->name('admin.penjualan');
 
+    Route::get('/admin/penjualan', [AdminController::class, 'penjualan'])->name('admin.penjualan');
+    Route::get('/admin/dashboard', [BarangController::class, 'dashboardbarang'])->name('admin.dashboard');
 });
+
 
 // Group untuk kasir
 Route::group(['middleware' => ['auth', 'role:kasir']], function () {

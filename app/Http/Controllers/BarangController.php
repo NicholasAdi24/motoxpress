@@ -89,4 +89,29 @@ class BarangController extends Controller
         $barang->delete();
         return redirect()->route('admin.barang.index')->with('success', 'Barang berhasil dihapus!');
     }
+
+    public function cekStok($id)
+{
+    $barang = Barang::findOrFail($id);
+    
+    if ($barang->isStokDiBawahMinimum()) {
+        return response()->json([
+            'status' => 'warning',
+            'message' => 'Stok barang di bawah minimum!',
+            'barang' => $barang->nama_barang,
+        ]);
+    } else {
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Stok mencukupi.',
+            'barang' => $barang->nama_barang,
+        ]);
+    }
 }
+    public function dashboardbarang()
+    {
+        $barangs = Barang::all();
+        return view('admin.dashboard', compact('barangs'));
+    }
+}
+

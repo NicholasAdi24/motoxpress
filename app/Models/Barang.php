@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Barang extends Model
 {
     use HasFactory;
-
     protected $fillable = ['id','nama_barang', 'harga', 'stok', 'gambar'];
+
+    public function isStokDiBawahMinimum()
+    {
+        return $this->stok < (int) $this->min_stok;
+    }
+
 }
