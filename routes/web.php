@@ -7,6 +7,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KasirController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\PemilikController;
 
 // Halaman utama
 Route::get('/', function () {
@@ -47,6 +48,24 @@ Route::group(['middleware' => ['auth', 'role:kasir']], function () {
     Route::get('/kasir', [KasirController::class, 'index'])->name('kasir.dashboard');
     Route::get('/riwayat-transaksi', [PembayaranController::class, 'index'])->name('riwayat.transaksi');
 });
+
+
+
+Route::group(['middleware' => ['auth', 'role:pemilik']], function () {
+    Route::get('/owner', [PemilikController::class, 'index'])->name('pemilik.dashboard');
+    Route::get('/owner/pendapatan', [PemilikController::class, 'pendapatan'])->name('pemilik.pendapatan');
+    Route::get('/owner/pengeluaran', [PemilikController::class, 'pengeluaran'])->name('pemilik.pengeluaran');
+    Route::post('/owner/pengeluaran', [PemilikController::class, 'storePengeluaran'])->name('pengeluaran.store');
+    Route::put('/owner/pengeluaran/{id}', [PemilikController::class, 'updatePengeluaran'])->name('pengeluaran.update');
+    Route::delete('/owner/pengeluaran/{id}', [PemilikController::class, 'destroyPengeluaran'])->name('pengeluaran.destroy');
+
+    Route::get('/pemilik/laba-rugi', [PemilikController::class, 'labaRugi'])->name('pemilik.labaRugi');
+
+
+
+});
+
+
 Route::post('/pembayaran', [PembayaranController::class, 'store'])->name('pembayaran.store');
 
 

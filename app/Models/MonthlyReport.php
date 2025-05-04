@@ -9,10 +9,11 @@ class MonthlyReport extends Model
     protected $fillable = [
         'bulan',
         'jumlah_transaksi',
-        'pemasukan',
+        'pemasukan_total',
     ];
 
     protected $casts = [
         'bulan' => 'date',
+        'pemasukan_total' => 'decimal:2',
     ];
 }

@@ -18,6 +18,8 @@ class LoginController extends Controller
             return redirect()->route('admin.dashboard');
         } elseif ($user->role === 'kasir') {
             return redirect()->route('kasir.dashboard');
+        } elseif ($user->role === 'pemilik') { // ✅ Tambahkan ini
+            return redirect()->route('pemilik.dashboard');
         }
 
         // Jika role tidak dikenali, logout dan kembalikan ke login

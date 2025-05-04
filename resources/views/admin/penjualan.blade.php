@@ -104,7 +104,7 @@
                 </p>
                 
                 <div class="d-flex justify-content-between align-items-center">
-                    <small><i class="fas fa-arrow-up"></i> 1%</small>
+                    
                     <small>{{ now()->year }}</small>
                 </div>
             </div>
@@ -117,7 +117,7 @@
                 <h3 class="card-title">Rp {{ number_format($totalPemasukanHariIni, 0, ',', '.') }}</h3>
                 <p class="card-text">Total Pemasukan Hari Ini</p>
                 <div class="d-flex justify-content-between align-items-center">
-                    <small><i class="fas fa-arrow-up"></i> 1%</small>
+                   
                     <small>{{ now()->year }}</small>
                 </div>
             </div>

@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Owner Dashboard</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Font Awesome 5 CDN -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 </head>
-<body>
+<body class="bg-light">
 
 <div class="d-flex">
     <!-- Sidebar -->
@@ -21,34 +23,29 @@
         <i class="bi bi-list" style="font-size: 24px; align-items: center; margin: 0 auto;"></i>
     </button>
 
-    <h4 class="text-white text-center mt-3 sidebar-title">Administration</h4>
+    <h4 class="text-white text-center mt-3 sidebar-title">MotoXpress-Owner</h4>
 
     <ul class="nav flex-column">
         <li class="nav-item">
-            <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                <i class="bi bi-house-door"></i> <span class="sidebar-text">Dashboard</span>
+            <a href="{{ route('pemilik.dashboard') }}" class="nav-link {{ request()->routeIs('pemilik.dashboard') ? 'active' : '' }}">
+                <i  class="fas fa-home me-2"></i> <span class="sidebar-text">Dashboard</span>
             </a>
         </li>
         <li class="nav-item">
-        <a href="{{ route('admin.penjualan') }}" class="nav-link {{ request()->routeIs('admin.penjualan') ? 'active' : '' }}">
-                <i class="bi bi-cash-coin"></i> <span class="sidebar-text">Penjualan</span>
+        <a href="{{ route('pemilik.pendapatan') }}" class="nav-link {{ request()->routeIs('pemilik.pendapatan') ? 'active' : '' }}">
+                <i  class="fas fa-money-bill-wave me-2"></i> <span class="sidebar-text">Pendapatan</span>
             </a>
         </li>
-        <!-- <li class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="bi bi-calendar-check"></i> <span class="sidebar-text">Employee Absence</span>
-            </a>
-        </li> -->
+
         <li class="nav-item">
-            <a href="{{ route('admin.barang.index') }}" class="nav-link {{ request()->routeIs('admin.barang.index') ? 'active' : '' }}">
-                <i class="bi bi-box-seam"></i> <span class="sidebar-text">Stok/Inventaris</span>
+            <a href="{{ route('pemilik.pengeluaran') }}" class="nav-link {{ request()->routeIs('pemilik.pengeluaran') ? 'active' : '' }}">
+                <i class="fas fa-wallet me-2"></i> <span class="sidebar-text">Pengeluaran</span>
             </a>
-        <!-- </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="bi bi-gear"></i> <span class="sidebar-text">Settings</span>
+
+            <li class="nav-item">
+            <a href="{{ route('pemilik.labaRugi') }}" class="nav-link {{ request()->routeIs('pemilik.labaRugi') ? 'active' : '' }}">
+                <i class="fas fa-chart-line me-2"></i> <span class="sidebar-text">Laporan Laba Rugi</span>
             </a>
-        </li> -->
         <li class="nav-item">
         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
         @csrf
@@ -221,5 +218,6 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
