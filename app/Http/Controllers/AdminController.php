@@ -11,25 +11,23 @@ class AdminController extends Controller
 {
     public function index()
     {
-        return view('admin.dashboard'); // Pastikan ada file 'dashboard.blade.php' di folder 'views/admin'
+        return redirect()->route('admin.dashboard');
     }
 
     public function penjualan()
     {
-        $pembayarans = Pembayaran::all(); // Mengambil semua data pembayaran
+        $pembayarans = Pembayaran::all();
         return view('admin.penjualan', compact('pembayarans'));
     }
 
     public function dashboard()
     {
-        $barang = Barang::all();
+        $pembayarans = Pembayaran::all();
+        $barangs = Barang::all();
 
-        $diBawahMinimum = $barang->filter(function ($item) {
-            return $item->stok < (int) $item->min_stok;
-        })->count();
-
-        $diAtasMinimum = $barang->count() - $diBawahMinimum;
-
-        return view('admin.dashboard', compact('diBawahMinimum', 'diAtasMinimum'));
+        $diBawahMinimum = $barangs->filter(fn($item) => $item->stok < (int) $item->min_stok)->count();
+        $diAtasMinimum = $barangs->count() - $diBawahMinimum;
+        
+        return view('admin.dashboard', compact('pembayarans', 'barangs', 'diBawahMinimum', 'diAtasMinimum'));
     }
 }

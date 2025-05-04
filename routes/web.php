@@ -33,7 +33,7 @@ Route::get('/home', function () {
             return redirect()->route('admin.dashboard');
         } elseif (Auth::user()->role === 'kasir') { // Tambahkan elseif untuk role kasir
             return redirect()->route('kasir.dashboard');
-        }        
+        }
     }
     return redirect('/login'); // Pastikan ada redirect jika tidak ada user
 })->name('home');
@@ -44,16 +44,17 @@ Route::group(['middleware' => ['auth', 'role:admin']], function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard'); // /admin/dashboard -> dashboard()
 
     Route::resource('admin/barang', BarangController::class)->names([
-        'index'   => 'admin.barang.index',
-        'create'  => 'admin.barang.create',
-        'store'   => 'admin.barang.store',
-        'edit'    => 'admin.barang.edit',
-        'update'  => 'admin.barang.update',
+        'index' => 'admin.barang.index',
+        'create' => 'admin.barang.create',
+        'store' => 'admin.barang.store',
+        'edit' => 'admin.barang.edit',
+        'update' => 'admin.barang.update',
         'destroy' => 'admin.barang.destroy',
     ]);
 
     Route::get('/admin/penjualan', [AdminController::class, 'penjualan'])->name('admin.penjualan');
-    Route::get('/admin/dashboard', [BarangController::class, 'dashboardbarang'])->name('admin.dashboard');
+    // Route::get('/admin/dashboard', [BarangController::class, 'dashboardbarang'])->name('admin.dashboard');
+    Route::resource('barangs', BarangController::class);
 });
 
 

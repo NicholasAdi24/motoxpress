@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama_barang');
             $table->decimal('harga', 10, 2);
             $table->integer('stok');
+            $table->integer('min_stok')->default(0);
             $table->string('gambar')->nullable();
             $table->timestamps();
         });
