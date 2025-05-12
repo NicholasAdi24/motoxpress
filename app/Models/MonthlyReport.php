@@ -10,6 +10,7 @@ class MonthlyReport extends Model
         'bulan',
         'jumlah_transaksi',
         'pemasukan_total',
+        'total_hpp'
     ];
 
     protected $casts = [

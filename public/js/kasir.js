@@ -45,7 +45,7 @@ function updateTanggal() {
 let daftarPesanan = [];
 let salinanStruk = []; 
 
-function tambahKePesanan(id, nama, harga) {
+function tambahKePesanan(id, nama, harga, hpp) {
     const sound = document.getElementById('soundBeep');
     if (sound) sound.play();
     const index = daftarPesanan.findIndex(item => item.id === id);
@@ -53,8 +53,9 @@ function tambahKePesanan(id, nama, harga) {
         daftarPesanan[index].qty++;
         daftarPesanan[index].total = daftarPesanan[index].qty * harga;
     } else {
-        daftarPesanan.push({ id, nama, qty: 1, total: harga });
+        daftarPesanan.push({ id, nama, qty: 1, total: harga, hpp });
     }
+    
     updateDaftarPesanan();
 }
 

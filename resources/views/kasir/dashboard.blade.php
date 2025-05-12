@@ -40,7 +40,7 @@
                     <div class="card product-card shadow-sm h-100 
                                 {{ $barang->stok == 0 ? 'opacity-50 cursor-not-allowed' : '' }}" 
                         @if ($barang->stok > 0)
-                            onclick="tambahKePesanan('{{ $barang->id }}','{{ $barang->nama_barang }}', {{ $barang->harga }})"
+                        onclick="tambahKePesanan('{{ $barang->id }}','{{ $barang->nama_barang }}', {{ $barang->harga }}, {{ $barang->harga_modal }})"
                         @endif
                     >
                         <img src="{{ asset('storage/' . $barang->gambar) }}" class="card-img-top" style="height: 120px; object-fit: contain;">

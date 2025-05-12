@@ -11,14 +11,32 @@
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
+    <form action="{{ route('admin.barang.index') }}" method="GET" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Cari nama barang..." value="{{ request('search') }}">
+            <button class="btn btn-outline-secondary" type="submit">
+                <i class="bi bi-search"></i>
+            </button>
+            @if(request('search'))
+                <a href="{{ route('admin.barang.index') }}" class="btn btn-outline-danger">
+                    <i class="bi bi-x-lg"></i> Reset
+                </a>
+            @endif
+        </div>
+    </form>
+
+
+
     <div class="row">
         @foreach ($barangs as $barang)
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
                 <div class="card shadow-sm">
                     <img src="{{ asset('storage/' . $barang->gambar) }}" class="card-img-top img-fluid" alt="{{ $barang->nama_barang }}" style="height: 150px; object-fit: cover;">
                     <div class="card-body text-center">
-                        <h6 class="card-title">{{ $barang->nama_barang }}</h6>
+                        <h5 class="card-title"><strong>{{ $barang->nama_barang }} </strong></h5>
                         <p class="card-text">Rp{{ number_format($barang->harga, 0, ',', '.') }}</p>
+                        
+                        <p class="text-muted">Harga Beli Rp{{ number_format($barang->harga_modal, 0, ',', '.') }}</p>
                         <p class="text-muted">Stok: {{ $barang->stok }}</p>
                         <a href="{{ route('admin.barang.edit', $barang->id) }}" class="btn btn-warning btn-sm">Edit</a>
                         <form action="{{ route('admin.barang.destroy', $barang->id) }}" method="POST" class="d-inline">

@@ -6,7 +6,10 @@
 
     $bulanTahunList = $pembayarans->map(function($item) {
         return Carbon::parse($item->waktu_pembayaran)->format('F Y');
-    })->unique();
+    })->unique()->sortByDesc(function($bulanTahun) {
+        return Carbon::createFromFormat('F Y', $bulanTahun);
+    });
+
 
     $bulanDipilih = request('bulan') ?? Carbon::now()->format('F Y');
 
@@ -128,7 +131,7 @@
 
 
         <!-- Dropdown bulan dan tahun -->
-        <form method="GET" class="d-flex mb-3">
+        <!-- <form method="GET" class="d-flex mb-3">
             <select name="bulan" class="form-select w-auto me-2">
                 @foreach($bulanTahunList as $bulanTahun)
                     <option value="{{ $bulanTahun }}" {{ $bulanTahun == $bulanDipilih ? 'selected' : '' }}>
@@ -137,7 +140,7 @@
                 @endforeach
             </select>
             <button type="submit" class="btn btn-primary">Sortir</button>
-        </form>
+        </form> -->
 
         <!-- Expand/Collapse per bulan -->
         @foreach($bulanTahunList as $bulanTahun)

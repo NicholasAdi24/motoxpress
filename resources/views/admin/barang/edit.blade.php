@@ -15,6 +15,10 @@
             <input type="number" name="harga" class="form-control" value="{{ $barang->harga }}" required>
         </div>
         <div class="mb-3">
+            <label>Harga Beli</label>
+            <input type="number" name="harga_modal" class="form-control" value="{{ $barang->harga_modal }}" required>
+        </div>
+        <div class="mb-3">
             <label>Stok</label>
             <input type="number" name="stok" class="form-control" value="{{ $barang->stok }}" required>
         </div>

@@ -14,6 +14,10 @@
             <input type="number" name="harga" class="form-control" required>
         </div>
         <div class="mb-3">
+            <label>Harga Beli</label>
+            <input type="number" name="harga_modal" class="form-control" required>
+        </div>
+        <div class="mb-3">
             <label>Stok</label>
             <input type="number" name="stok" class="form-control" required>
         </div>

@@ -11,6 +11,7 @@ class DailyReport extends Model
         'jumlah_transaksi',
         'pemasukan_total',
         'item_terjual',
+        'total_hpp'
     ];
 
     protected $casts = [

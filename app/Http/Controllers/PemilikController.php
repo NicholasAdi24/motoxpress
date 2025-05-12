@@ -176,20 +176,27 @@ public function destroyPengeluaran($id)
 public function labaRugi()
 {
     $monthlyReports = MonthlyReport::orderBy('bulan')->get();
+
+    // Total pengeluaran per bulan
     $expenses = Expense::selectRaw('DATE_FORMAT(tanggal, "%Y-%m-01") as bulan, SUM(jumlah) as total')
-                        ->groupBy('bulan')
-                        ->pluck('total', 'bulan');
+        ->groupBy('bulan')
+        ->pluck('total', 'bulan');
 
     $data = $monthlyReports->map(function ($laporan) use ($expenses) {
-        $bulanKey = \Carbon\Carbon::parse($laporan->bulan)->format('Y-m-01');
+        $bulanKey = Carbon::parse($laporan->bulan)->format('Y-m-01');
+        $pendapatan = $laporan->pemasukan_total;
+        $hpp = $laporan->total_hpp ?? 0;
+        $laba_kotor = $pendapatan - $hpp;
         $pengeluaran = $expenses[$bulanKey] ?? 0;
-        $laba = $laporan->pemasukan_total - $pengeluaran;
+        $laba_bersih = $laba_kotor - $pengeluaran;
 
         return [
-            'bulan' => \Carbon\Carbon::parse($laporan->bulan)->translatedFormat('F Y'),
-            'pendapatan' => $laporan->pemasukan_total,
+            'bulan' => Carbon::parse($laporan->bulan)->translatedFormat('F Y'),
+            'pendapatan' => $pendapatan,
+            'hpp' => $hpp,
+            'laba_kotor' => $laba_kotor,
             'pengeluaran' => $pengeluaran,
-            'laba_rugi' => $laba
+            'laba_bersih' => $laba_bersih
         ];
     });
 

@@ -7,12 +7,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
-    <!-- Font Awesome 5 CDN -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
 </head>
 <body>
-
 <div class="d-flex">
     <!-- Sidebar -->
     <div id="sidebar" class="sidebar">
@@ -34,21 +30,10 @@
                 <i class="bi bi-cash-coin"></i> <span class="sidebar-text">Penjualan</span>
             </a>
         </li>
-        <!-- <li class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="bi bi-calendar-check"></i> <span class="sidebar-text">Employee Absence</span>
-            </a>
-        </li> -->
         <li class="nav-item">
             <a href="{{ route('admin.barang.index') }}" class="nav-link {{ request()->routeIs('admin.barang.index') ? 'active' : '' }}">
                 <i class="bi bi-box-seam"></i> <span class="sidebar-text">Stok/Inventaris</span>
             </a>
-        <!-- </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link">
-                <i class="bi bi-gear"></i> <span class="sidebar-text">Settings</span>
-            </a>
-        </li> -->
         <li class="nav-item">
         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
         @csrf
@@ -221,5 +206,6 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+@yield('scripts')
 </body>
 </html>

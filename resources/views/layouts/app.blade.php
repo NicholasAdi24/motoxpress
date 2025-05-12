@@ -15,6 +15,7 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    
 </head>
 <body>
     <div id="app">
@@ -76,5 +77,72 @@
             @yield('content')
         </main>
     </div>
+
+    <style>
+    body {
+        background-image: url('/images/background-bengkel.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh;
+        color: black;
+    }
+
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .login-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        color: #fff;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .login-card label {
+        color: #fff;
+    }
+
+    .login-card .form-control {
+        background-color: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: #fff;
+    }
+
+    .login-card .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .navbar {
+        display: none !important; /* Sembunyikan navbar untuk halaman login */
+    }
+
+    .card {
+        background-color: rgba(255, 255, 255, 0.9); /* transparan putih */
+        color: black;
+    }
+
+    h3, label, input, .form-check-label, .btn, .invalid-feedback {
+        color: black !important;
+    }
+
+    input.form-control {
+        background-color: white;
+        color: black;
+    }
+
+    a.btn-link {
+        color: #000; /* hitam untuk link lupa password */
+    }
+</style>
+
 </body>
 </html>

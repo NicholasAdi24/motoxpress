@@ -8,11 +8,16 @@ use Illuminate\Support\Facades\Storage;
 
 class BarangController extends Controller
 {
-    public function index()
-    {
-        $barangs = Barang::all();
-        return view('admin.barang.index', compact('barangs'));
-    }
+    public function index(Request $request)
+{
+    $search = $request->input('search');
+
+    $barangs = Barang::when($search, function ($query, $search) {
+        return $query->where('nama_barang', 'like', '%' . $search . '%');
+    })->get();
+
+    return view('admin.barang.index', compact('barangs'));
+}
 
     public function create()
     {
@@ -24,6 +29,7 @@ class BarangController extends Controller
         $request->validate([
             'nama_barang' => 'required|string|max:255',
             'harga' => 'required|numeric',
+            'harga_modal' => 'required|numeric',
             'stok' => 'required|integer',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
@@ -36,6 +42,7 @@ class BarangController extends Controller
         Barang::create([
             'nama_barang' => $request->nama_barang,
             'harga' => $request->harga,
+            'harga_modal' => $request->harga_modal,
             'stok' => $request->stok,
             'gambar' => $gambarPath
         ]);
@@ -53,6 +60,7 @@ class BarangController extends Controller
     $request->validate([
         'nama_barang' => 'required|string|max:255',
         'harga' => 'required|numeric',
+        'harga_modal' => 'required|numeric',
         'stok' => 'required|integer',
         'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
     ]);
@@ -72,6 +80,7 @@ class BarangController extends Controller
     $barang->update([
         'nama_barang' => $request->nama_barang,
         'harga' => $request->harga,
+        'harga_modal' => $request->harga_modal,
         'stok' => $request->stok,
         'gambar' => $gambarPath
     ]);

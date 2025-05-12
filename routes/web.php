@@ -11,7 +11,7 @@ use App\Http\Controllers\PemilikController;
 
 // Halaman utama
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 // Authentication Routes (Login, Register, etc.)
@@ -23,27 +23,31 @@ Route::get('/home', function () {
         return Auth::user()->role === 'admin' 
             ? redirect()->route('admin.dashboard') 
             : redirect()->route('kasir.dashboard');
+            
     }
     return redirect('/login');
 })->name('home');
 
 // Group untuk admin
 
-
+// Group untuk admin
 Route::group(['middleware' => ['auth', 'role:admin']], function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index'); // /admin -> index()
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard'); // /admin/dashboard -> dashboard()
+
     Route::resource('admin/barang', BarangController::class)->names([
-        'index'   => 'admin.barang.index',
-        'create'  => 'admin.barang.create',
-        'store'   => 'admin.barang.store',
-        'edit'    => 'admin.barang.edit',
-        'update'  => 'admin.barang.update',
+        'index' => 'admin.barang.index',
+        'create' => 'admin.barang.create',
+        'store' => 'admin.barang.store',
+        'edit' => 'admin.barang.edit',
+        'update' => 'admin.barang.update',
         'destroy' => 'admin.barang.destroy',
     ]);
+
     Route::get('/admin/penjualan', [AdminController::class, 'penjualan'])->name('admin.penjualan');
-
+    // Route::get('/admin/dashboard', [BarangController::class, 'dashboardbarang'])->name('admin.dashboard');
+    Route::resource('barangs', BarangController::class);
 });
-
 Route::group(['middleware' => ['auth', 'role:kasir']], function () {
     Route::get('/kasir', [KasirController::class, 'index'])->name('kasir.dashboard');
     Route::get('/riwayat-transaksi', [PembayaranController::class, 'index'])->name('riwayat.transaksi');
@@ -72,9 +76,4 @@ Route::post('/pembayaran', [PembayaranController::class, 'store'])->name('pembay
 Route::get('/test-role', function () {
     return 'Role middleware is working.';
 })->middleware('role:admin');
-
-// Group untuk kasir
-Route::middleware(['auth', 'role:kasir'])->group(function () {
-    Route::get('/kasir', [KasirController::class, 'index'])->name('kasir.dashboard');
-});
 

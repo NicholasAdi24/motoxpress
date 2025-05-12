@@ -4,7 +4,6 @@
 <div class="container">
     <h3 class="mb-4">📊 Laporan Laba / Rugi Bulanan</h3>
 
-    
     {{-- Grafik --}}
     <div class="card shadow-sm mb-4">
         <div class="card-body">
@@ -18,8 +17,10 @@
             <tr>
                 <th>Bulan</th>
                 <th>Pendapatan</th>
-                <th>Pengeluaran</th>
-                <th>Laba / Rugi</th>
+                <th>HPP</th>
+                <th>Beban Operasional</th>
+                <th>Laba Kotor</th>
+                <th>Laba Bersih</th>
             </tr>
         </thead>
         <tbody>
@@ -27,9 +28,11 @@
                 <tr>
                     <td>{{ $row['bulan'] }}</td>
                     <td>Rp {{ number_format($row['pendapatan'], 0, ',', '.') }}</td>
+                    <td>Rp {{ number_format($row['hpp'], 0, ',', '.') }}</td>
                     <td>Rp {{ number_format($row['pengeluaran'], 0, ',', '.') }}</td>
-                    <td class="{{ $row['laba_rugi'] >= 0 ? 'text-success' : 'text-danger' }}">
-                        Rp {{ number_format($row['laba_rugi'], 0, ',', '.') }}
+                    <td>Rp {{ number_format($row['laba_kotor'], 0, ',', '.') }}</td>
+                    <td class="{{ $row['laba_bersih'] >= 0 ? 'text-success fw-bold' : 'text-danger fw-bold' }}">
+                        Rp {{ number_format($row['laba_bersih'], 0, ',', '.') }}
                     </td>
                 </tr>
             @endforeach
@@ -40,8 +43,10 @@
 <script>
     const labels = @json(collect($data)->pluck('bulan'));
     const pendapatan = @json(collect($data)->pluck('pendapatan'));
+    const hpp = @json(collect($data)->pluck('hpp'));
     const pengeluaran = @json(collect($data)->pluck('pengeluaran'));
-    const labaRugi = @json(collect($data)->pluck('laba_rugi'));
+    const labaKotor = @json(collect($data)->pluck('laba_kotor'));
+    const labaBersih = @json(collect($data)->pluck('laba_bersih'));
 
     const ctx = document.getElementById('chartLabaRugi').getContext('2d');
     const chartLabaRugi = new Chart(ctx, {
@@ -57,15 +62,29 @@
                     fill: false
                 },
                 {
-                    label: 'Pengeluaran',
+                    label: 'HPP',
+                    data: hpp,
+                    borderColor: 'orange',
+                    tension: 0.3,
+                    fill: false
+                },
+                {
+                    label: 'Beban Operasional',
                     data: pengeluaran,
                     borderColor: 'red',
                     tension: 0.3,
                     fill: false
                 },
                 {
-                    label: 'Laba / Rugi',
-                    data: labaRugi,
+                    label: 'Laba Kotor',
+                    data: labaKotor,
+                    borderColor: 'purple',
+                    tension: 0.3,
+                    fill: false
+                },
+                {
+                    label: 'Laba Bersih',
+                    data: labaBersih,
                     borderColor: 'green',
                     tension: 0.3,
                     fill: false

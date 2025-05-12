@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // Menjalankan command setiap hari pukul 23.00
-        $schedule->command('laporan:harian')->dailyAt('23:00');
+        $schedule->command('report:daily')->dailyAt('23:00');
     }
 
     protected function commands()
