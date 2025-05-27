@@ -108,7 +108,7 @@ class PemilikController extends Controller
 
     public function pendapatan()
 {
-    $laporan = MonthlyReport::orderBy('bulan', 'asc')->get();
+    $laporan = MonthlyReport::orderBy('bulan', 'desc')->get();
     return view('pemilik.pendapatan', compact('laporan'));
 }
 
@@ -175,7 +175,7 @@ public function destroyPengeluaran($id)
 }
 public function labaRugi()
 {
-    $monthlyReports = MonthlyReport::orderBy('bulan')->get();
+    $monthlyReports = MonthlyReport::orderBy('bulan', 'desc')->get(); // urut terbaru ke terlama
 
     // Total pengeluaran per bulan
     $expenses = Expense::selectRaw('DATE_FORMAT(tanggal, "%Y-%m-01") as bulan, SUM(jumlah) as total')
@@ -202,5 +202,6 @@ public function labaRugi()
 
     return view('pemilik.laba-rugi', compact('data'));
 }
+
 
 }

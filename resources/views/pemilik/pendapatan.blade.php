@@ -33,11 +33,13 @@
 </div>
 
 <script>
-    const labels = @json($laporan->pluck('bulan')->map(function($bulan) {
+    
+    const labels = @json(collect($laporan)->reverse()->pluck('bulan')->map(function($bulan)
+    {
         return \Carbon\Carbon::parse($bulan)->translatedFormat('F Y');
     }));
 
-    const dataPemasukan = @json($laporan->pluck('pemasukan_total')->map(fn($v) => (float) $v));
+    const dataPemasukan = @json(collect($laporan)->reverse()->pluck('pemasukan_total')->map(fn($v) => (float) $v));
 
     const ctx = document.getElementById('chartPendapatan').getContext('2d');
 

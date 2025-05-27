@@ -41,12 +41,12 @@
 </div>
 
 <script>
-    const labels = @json(collect($data)->pluck('bulan'));
-    const pendapatan = @json(collect($data)->pluck('pendapatan'));
-    const hpp = @json(collect($data)->pluck('hpp'));
-    const pengeluaran = @json(collect($data)->pluck('pengeluaran'));
-    const labaKotor = @json(collect($data)->pluck('laba_kotor'));
-    const labaBersih = @json(collect($data)->pluck('laba_bersih'));
+    const labels = @json(collect($data)->reverse()->pluck('bulan'));
+    const pendapatan = @json(collect($data)->reverse()->pluck('pendapatan'));
+    const hpp = @json(collect($data)->reverse()->pluck('hpp'));
+    const pengeluaran = @json(collect($data)->reverse()->pluck('pengeluaran'));
+    const labaKotor = @json(collect($data)->reverse()->pluck('laba_kotor'));
+    const labaBersih = @json(collect($data)->reverse()->pluck('laba_bersih'));
 
     const ctx = document.getElementById('chartLabaRugi').getContext('2d');
     const chartLabaRugi = new Chart(ctx, {
