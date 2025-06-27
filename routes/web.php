@@ -64,6 +64,8 @@ Route::group(['middleware' => ['auth', 'role:pemilik']], function () {
     Route::delete('/owner/pengeluaran/{id}', [PemilikController::class, 'destroyPengeluaran'])->name('pengeluaran.destroy');
 
     Route::get('/pemilik/laba-rugi', [PemilikController::class, 'labaRugi'])->name('pemilik.labaRugi');
+    Route::get('/pemilik/laba-rugi/export', [PemilikController::class, 'exportLabaRugi'])->name('pemilik.laba-rugi.export');
+
 
 
 

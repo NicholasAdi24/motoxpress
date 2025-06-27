@@ -8,7 +8,8 @@ use App\Models\Expense;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use App\Models\Pembayaran;
-
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\LabaRugiExport;
 
 class PemilikController extends Controller
 {
@@ -173,17 +174,21 @@ public function destroyPengeluaran($id)
     Expense::findOrFail($id)->delete();
     return redirect()->route('pemilik.pengeluaran')->with('success', 'Pengeluaran dihapus.');
 }
-public function labaRugi()
+public function labaRugi(Request $request)
 {
-    $monthlyReports = MonthlyReport::orderBy('bulan', 'desc')->get(); // urut terbaru ke terlama
+    $filter = $request->input('filter', 12); // default 12 bulan
+    $cutoffDate = now()->subMonths($filter)->startOfMonth();
 
-    // Total pengeluaran per bulan
+    $monthlyReports = MonthlyReport::where('bulan', '>=', $cutoffDate)
+        ->orderBy('bulan', 'desc')
+        ->get();
+
     $expenses = Expense::selectRaw('DATE_FORMAT(tanggal, "%Y-%m-01") as bulan, SUM(jumlah) as total')
         ->groupBy('bulan')
         ->pluck('total', 'bulan');
 
     $data = $monthlyReports->map(function ($laporan) use ($expenses) {
-        $bulanKey = Carbon::parse($laporan->bulan)->format('Y-m-01');
+        $bulanKey = \Carbon\Carbon::parse($laporan->bulan)->format('Y-m-01');
         $pendapatan = $laporan->pemasukan_total;
         $hpp = $laporan->total_hpp ?? 0;
         $laba_kotor = $pendapatan - $hpp;
@@ -191,7 +196,36 @@ public function labaRugi()
         $laba_bersih = $laba_kotor - $pengeluaran;
 
         return [
-            'bulan' => Carbon::parse($laporan->bulan)->translatedFormat('F Y'),
+            'bulan' => \Carbon\Carbon::parse($laporan->bulan)->translatedFormat('F Y'),
+            'pendapatan' => $pendapatan,
+            'hpp' => $hpp,
+            'pengeluaran' => $pengeluaran,
+            'laba_kotor' => $laba_kotor,
+            'laba_bersih' => $laba_bersih
+        ];
+    });
+
+    return view('pemilik.laba-rugi', compact('data'));
+}
+
+
+public function exportLabaRugi()
+{
+    $monthlyReports = MonthlyReport::orderBy('bulan', 'desc')->get();
+    $expenses = Expense::selectRaw('DATE_FORMAT(tanggal, "%Y-%m-01") as bulan, SUM(jumlah) as total')
+        ->groupBy('bulan')
+        ->pluck('total', 'bulan');
+
+    $data = $monthlyReports->map(function ($laporan) use ($expenses) {
+        $bulanKey = \Carbon\Carbon::parse($laporan->bulan)->format('Y-m-01');
+        $pendapatan = $laporan->pemasukan_total;
+        $hpp = $laporan->total_hpp ?? 0;
+        $laba_kotor = $pendapatan - $hpp;
+        $pengeluaran = $expenses[$bulanKey] ?? 0;
+        $laba_bersih = $laba_kotor - $pengeluaran;
+
+        return [
+            'bulan' => \Carbon\Carbon::parse($laporan->bulan)->translatedFormat('F Y'),
             'pendapatan' => $pendapatan,
             'hpp' => $hpp,
             'laba_kotor' => $laba_kotor,
@@ -200,8 +234,7 @@ public function labaRugi()
         ];
     });
 
-    return view('pemilik.laba-rugi', compact('data'));
+    return Excel::download(new LabaRugiExport($data), 'laba_rugi.xlsx');
 }
-
 
 }

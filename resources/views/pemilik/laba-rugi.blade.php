@@ -12,6 +12,20 @@
         </div>
     </div>
 
+    <a href="{{ route('pemilik.laba-rugi.export') }}" class="btn btn-success mb-3">
+    <i class="bi bi-file-earmark-excel"></i> Export Excel
+</a>
+
+<form method="GET" class="mb-3">
+    <label for="filter" class="form-label">Tampilkan data untuk:</label>
+    <select name="filter" id="filter" class="form-select" style="width: 200px;" onchange="this.form.submit()">
+        <option value="24" {{ request('filter') == 24 ? 'selected' : '' }}>24 Bulan Terakhir</option>
+        <option value="12" {{ request('filter') == 12 ? 'selected' : '' }}>12 Bulan Terakhir</option>
+        <option value="6" {{ request('filter') == 6 ? 'selected' : '' }}>6 Bulan Terakhir</option>
+        <option value="3" {{ request('filter') == 3 ? 'selected' : '' }}>3 Bulan Terakhir</option>
+    </select>
+</form>
+
     <table class="table table-bordered table-striped">
         <thead class="table-secondary">
             <tr>
